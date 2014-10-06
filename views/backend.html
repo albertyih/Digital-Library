@@ -1,0 +1,296 @@
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="js/jquery.js"></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">   -->
+<script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+       <script src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>  
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+
+  </head>
+  <body>
+    <script>
+$(document).ready(function(){
+
+       //socket = io.connect('http://10.201.150.161:3000');
+        //socket = io.connect('http://192.168.1.140:3000');
+        socket = io.connect('localhost:3000');
+        socket.on('date', function(data) {
+
+        $('#flip').text(data.date);
+      });
+
+
+        socket.on('poster',function(data){
+          $("#selectpic").empty();
+      for(var k=0;k<data.length;k++){
+        $("#selectpic").append('<div id ='+k+' class=pic  style="display: inline-block;"></div>')
+          $("#"+k).append('<img style="width:10%;height:10%;" src=\''+data[k]+ '\'/>')
+        }
+
+
+
+
+          
+        });
+//         socket.on('event',function(data){
+//          // alert(data.priority);
+//           //alert(data.Type);
+//            //$("option").removeClass(".Sel_log"); 
+//            if(data.Type=='logo'){
+//                 $("#logoSelect").empty();
+//                 for(var i=0;i<data.logo.length;i++) 
+//                 { 
+//                     var str=data.logo[i];
+//                     var middle=str.split("logo_king/");
+//                     try{
+//                       var res=middle[1].split("_answer");
+//                       $("#logoSelect").append("<option class=\"Sel_log\" value=\""+i+"\" name=\""+data.name[i]+"\">"+res[0]+"    "+data.priority[i]+"</option>")
+//                     }catch(e){}
+//                   }
+//             }
+//             else if(data.Type=='wisdom'){
+//                 $("#wisdomSelect").empty();
+//                 for(var i=0;i<data.title.length;i++) 
+//                 { 
+//                     //var str=data.logo[i];
+//                     //var middle=str.split("logo_king/");
+//                     //var res=middle[1].split("_answer");
+//                     $("#wisdomSelect").append("<option class=\"Sel_wis\" value=\""+i+"\" name=\""+data.name[i]+"\">"+data.title[i]+"    "+data.priority[i]+"</option>")
+//                   }
+//             }
+//             else if(data.Type=='geo'){
+//                 $("#geoSelect").empty();
+//                 for(var i=0;i<data.title.length;i++) 
+//                 { 
+//                     var str=data.title[i];
+//                     var middle=str.split("/geo/");
+//                     var res=middle[1].split(".jpg");
+//                     $("#geoSelect").append("<option class=\"Sel_wis\" value=\""+i+"\" name=\""+data.name[i]+"\">"+res[0]+"    "+data.priority[i]+"</option>")
+//                   }
+//             }
+//                else if(data.Type=='destiny'){
+//                 $("#OppSelect").empty();
+//                 for(var i=0;i<data.title.length;i++) 
+//                 { 
+                   
+//                     $("#OppSelect").append("<option class=\"Sel_wis\" value=\""+i+"\" name=\""+data.name[i]+"\">"+data.title[i]+"    "+data.priority[i]+"</option>")
+//                   }
+//             }
+// });
+
+$(document).on("click", ".pic", function() {
+$("#image").text($(this).find('img').attr('src'));
+
+} );
+       $("#submit").click(function() {
+             socket.emit('saveposter', {
+             'title': $('#title').val(),
+             'time': $('#time').val(),
+             'building': $('#building').val(),
+             'category': $('#category').val(),
+             'image': $('#image').val()
+           });
+
+       });
+
+       // $("#list").listview('refresh');  
+       // $('#BT').click(function() {
+       //    //alert("!!"); 
+       //    socket.emit('Steps', {
+       //       'team': $('#SD').val()[0],
+       //       'steps':$('#text').val()
+       //     });
+       //  });
+       //  $('#next').click(function() {
+       //    socket.emit('next', {
+  
+       //     });
+       //  });
+       //  $('.logo').click(function() {
+       //      alert($(this).attr("id"));
+       //  });
+       //  $('#BT2').click(function() {
+       //    var score;
+       //      if($('#score').val()=="")
+       //        $('#score').val('0')
+       //     socket.emit('score', {
+       //       'team': $('#SD2').val()[0],
+       //       'score':$('#score').val()
+       //     });
+
+       //     });
+
+       //      var option_logo;
+       //       $("#logoSelect").change(function(){
+       //        option_logo = $('option:selected', this).attr('name');
+       //       });
+       //     $('#BT3').click(function() {
+       //      var name=option_logo;
+       //      //alert($('#priority_logo').val());
+       //      // alert(option);
+       //      socket.emit("priority",{
+       //        'Type':'logo',
+       //        'Name':name,
+       //        'priority':$('#priority_logo').val()
+       //                     })       
+       //     });
+       //      var option_wis ;
+       //       $("#wisdomSelect").change(function(){
+       //        option_wis = $('option:selected', this).attr('name');
+       //       });
+       //     $('#BT4').click(function() {
+       //      var name=option_wis;
+       //     // alert($('#priority_wisdom').val());
+       //      var w_p=$('#priority_wisdom').val();
+       //      // alert(option);
+       //      socket.emit("priority",{
+       //        'Type':'wisdom',
+       //        'Name':name,
+       //        'priority':w_p
+       //                     })       
+       //     });
+       //      var option_geo ;
+       //       $("#geoSelect").change(function(){
+       //        option_geo = $('option:selected', this).attr('name');
+       //       });
+
+       //    $('#BT5').click(function() {
+       //      var name=option_geo;
+
+       //      socket.emit("priority",{
+       //        'Type':'geo',
+       //        'Name':name,
+       //        'priority':$('#priority_geo').val()
+       //                     })       
+       //     });
+       //     var option_opp ;
+       //       $("#OppSelect").change(function(){
+       //        option_opp = $('option:selected', this).attr('name');
+       //       });
+       //    $('#opp').click(function() {
+       //      var name=option_opp;
+
+       //      socket.emit("priority",{
+       //        'Type':'destiny',
+       //        'Name':name,
+       //        'priority':$('#priority_opp').val()
+       //                     })       
+       //     });
+
+       //    $('#countdown').click(function() {
+         
+
+       //      socket.emit("countdown");       
+       //     });
+
+       //    function clearContents(element) {
+       //        element.value = '';
+       //    }
+       //    $('textarea.clean ').focus(function(event) {
+          
+       //      $(this).val('');
+       //    });
+
+       //    $('#evenrich').click(function() {
+       //      var password = prompt("Please enter your pasword", "");
+    
+       //     if(password=="0000")
+       //       socket.emit("evenrich");    
+       //     });
+       //     $('#flot').click(function() {
+           
+       //      socket.emit("flot");    
+       //     });
+
+
+
+
+ });
+    </script>
+<!--           <div  id="flip"> flip</div> 
+          <div id="right" style="display: inline-block;">  
+                <select id="SD" size="7"  class="Sel">
+                <option value="1" selected> 1 搖桿隊</option>
+                <option value="2">2 鞋子隊</option>
+                <option value="3">3 甜甜圈對</option>
+                <option value="4">4 卡車隊</option>
+                <option value="5">5 保齡球隊</option>
+                <option value="6">6 書包隊</option>
+               
+                </select>  
+            </div>
+         <div id="dialog"><div>
+                 <textarea id="text"class='clean'  ></textarea>
+                <div class="team" id="BT" style="display: inline-block"> ENTER </div>
+                <div class="team" id="countdown" style="display: inline-block"> 倒數 </div>
+                 <div  id="next" style="display: inline-block;"> 答案 </div> 
+
+                    <div id="right" >  
+                <select id="SD2" size="7" class="Sel">
+                <option value="0" selected> 1 搖桿隊</option>
+                <option value="1">2 鞋子隊</option>
+                <option value="2">3 甜甜圈隊</option>
+                <option value="3">4 卡車隊</option>
+                <option value="4">5 保齡球隊</option>
+                <option value="5">6 書包隊</option>
+              
+                </select>  
+                <textarea id="score" class='clean' ></textarea>
+                <div class="team" id="BT2" style="display: inline-block"> ENTER </div>
+                </div>
+      
+            <div></div>
+            <div class="team" id="flot" style="display: inline-block">統計</div>
+            <div></div>
+
+           <!--  <div id="priority" style="display: inline-block;">
+              <ul id="list" data-role="listview">
+              
+              </ul>
+            </div>
+           <div id="priority2" style="display: inline-block;">
+            </div> -->
+          <!--  <select id="logoSelect" class="Sel" size="7" style="display: inline-block;">
+           </select>  
+           <textarea id="priority_logo" class='clean' ></textarea>
+           <div class="team" id="BT3" style="display: inline-block"> ENTER </div>
+
+           <select id="wisdomSelect" class="Sel" size="7" style="display: inline-block;">
+           </select>  
+           <textarea id="priority_wisdom" style="display: inline-block;" class='clean'  ></textarea>
+           <div class="team" id="BT4" style="display: inline-block;"> ENTER </div>
+
+           <select id="geoSelect" class="Sel" size="7" >
+           </select>  
+           <textarea id="priority_geo" class='clean'  ></textarea>
+           <div class="team" id="BT5" style="display: inline-block"> ENTER </div>
+
+
+
+          <div class="team" id="evenrich">均富卡</div>
+            <select id="OppSelect" class="Sel" size="7" >
+           </select>  
+           <textarea id="priority_opp" class='clean'  ></textarea>
+           <div class="team" id="opp" style="display: inline-block"> ENTER </div> -->
+           <div id='selectpic' style="display: inline-block;"></div>
+            <textarea id="title" class='clean'  ></textarea>title
+            <textarea id="time" class='clean'  ></textarea>time
+            <textarea id="building" class='clean'  ></textarea>building
+            <textarea id="category" class='clean'  ></textarea>category
+            <textarea id="image" class='clean'  ></textarea>image
+            <div class="team" id="submit">submit</div>
+
+
+
+
+
+
+
+
+
+                 </body>
+</html>
